@@ -1,10 +1,9 @@
-from rest_framework.test import APIRequestFactory
-from django.test import TestCase
-
+from rest_framework.test import APIRequestFactory, APIClient, APITestCase
+from django.urls import reverse
 from . import views
 from .models import Product
 
-class ProductViewTest(TestCase):
+class ProductViewTest(APITestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
 
@@ -28,9 +27,22 @@ class ProductViewTest(TestCase):
         request = self.factory.post('/products/', { "name": "hi", "description": "yo", "price_per_unit": 1, "quantity": 2})
         response = views.ProductView.as_view()(request)
         self.assertEqual(response.status_code, 201)
-        product = Product.objects.get(pk=1)
-        self.assertEqual(product.name, 'hi')
-        self.assertEqual(product.description, 'yo')
-        self.assertEqual(product.price_per_unit, 1)
-        self.assertEqual(product.quantity, 2)
+        
 
+class ProductDetailViewTest(APITestCase):
+
+    def test_details(self):
+        self.client.post('/products/', { "name": "hi", "description": "yo", "price_per_unit": 1, "quantity": 2})
+        # Test detail GET request
+        response = self.client.get(reverse('product-detail', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, 200)
+        # Test PUT request
+        response = self.client.put(reverse('product-detail', kwargs={'pk': 1}), {"name": "test"})
+        self.assertEqual(response.status_code, 200)
+        # Test DELETE request
+        response = self.client.delete(reverse('product-detail', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, 204)
+        
+
+        
+        
