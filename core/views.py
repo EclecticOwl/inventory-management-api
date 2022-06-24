@@ -31,3 +31,16 @@ class ProductDetailView(APIView):
         product = self.get_object(pk)
         serializer = ProductSerializer(product)
         return Response(serializer.data)
+
+    def put(self, request, pk):
+        product = self.get_object(pk)
+        serializer = ProductSerializer(product, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
+        return Response(serializer.errors, status=400)
+
+    def delete(self, request, pk):
+        product = self.get_object(pk)
+        product.delete()
+        return Response(status=204)
