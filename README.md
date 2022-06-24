@@ -1,1 +1,3 @@
-# inventory-management-api
+# Inventory Management Api
+
+- Coding in progress
