@@ -8,4 +8,5 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'price_per_unit', 'quantity']
+        read_only_fields = ['id']
 

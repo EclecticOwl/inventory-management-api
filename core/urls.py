@@ -6,8 +6,10 @@ from core import views
 
 
 urlpatterns = [
-    path('products/', views.ProductView.as_view()),
-    path('products/<int:pk>/', views.ProductDetailView.as_view()),
+    path('', views.api_root),
+
+    path('products/', views.ProductView.as_view(), name='product-list'),
+    path('products/<int:pk>/', views.ProductDetailView.as_view(), name='product-detail'),
 ]
 
 
